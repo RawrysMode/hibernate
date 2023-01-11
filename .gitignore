@@ -15,4 +15,3 @@ target/
 *.ipr
 .idea/jpa-buddy.xml
 src/main/resources/hibernate.properties
-.idea/checkstyle-idea.xml
