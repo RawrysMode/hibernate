@@ -14,4 +14,3 @@ target/
 *.ipr
 .idea/jpa-buddy.xml
 src/main/resources/hibernate.properties
-.idea/workspace.xml
