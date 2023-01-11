@@ -1,10 +1,18 @@
-package com.rawrysmode.entities;
+package com.rawrysmode.entities.job;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "jobs")
 public class Job {
+    public Job(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public Job() {
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -29,4 +37,8 @@ public class Job {
         this.jobTitle = jobTitle;
     }
 
+    @Override
+    public String toString() {
+        return jobTitle;
+    }
 }

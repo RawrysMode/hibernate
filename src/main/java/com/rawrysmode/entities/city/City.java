@@ -1,10 +1,18 @@
-package com.rawrysmode.entities;
+package com.rawrysmode.entities.city;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "cities")
 public class City {
+    public City(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public City() {
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -29,4 +37,8 @@ public class City {
         this.cityName = cityName;
     }
 
+    @Override
+    public String toString() {
+        return cityName;
+    }
 }

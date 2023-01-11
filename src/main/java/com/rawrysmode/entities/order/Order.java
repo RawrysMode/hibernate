@@ -1,5 +1,8 @@
-package com.rawrysmode.entities;
+package com.rawrysmode.entities.order;
 
+import com.rawrysmode.entities.client.Client;
+import com.rawrysmode.entities.employee.Employee;
+import com.rawrysmode.entities.route.Route;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -14,12 +17,12 @@ public class Order {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
@@ -27,7 +30,7 @@ public class Order {
     @Column(name = "order_date", nullable = false)
     private Instant orderDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "route_id", nullable = false)
     private Route route;
@@ -116,4 +119,17 @@ public class Order {
         this.nvc = nvc;
     }
 
+    @Override
+    public String toString() {
+        return client.getCompanyName() +
+                " " + employee.getFirstname() +
+                " " + employee.getLastname() +
+                " " + orderDate +
+                " " + route.getDepartureCity() +
+                " " + route.getDestinationCity() +
+                " " + wagonNumber +
+                " " + shippingDate +
+                " " + shippingCost +
+                " " + nvc;
+    }
 }

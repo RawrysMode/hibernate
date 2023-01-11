@@ -1,4 +1,4 @@
-package com.rawrysmode.entities;
+package com.rawrysmode.entities.client;
 
 import jakarta.persistence.*;
 
@@ -73,4 +73,12 @@ public class Client {
         this.email = email;
     }
 
+    @Override
+    public String toString() {
+        return companyName +
+                " " + postalAddress +
+                " " + phoneNumber +
+                " " + faxNumber +
+                " " + email;
+    }
 }

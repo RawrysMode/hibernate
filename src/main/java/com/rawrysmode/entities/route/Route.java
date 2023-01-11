@@ -1,5 +1,6 @@
-package com.rawrysmode.entities;
+package com.rawrysmode.entities.route;
 
+import com.rawrysmode.entities.city.City;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -11,12 +12,12 @@ public class Route {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "departure_city_id", nullable = false)
     private City departureCity;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "destination_city_id", nullable = false)
     private City destinationCity;
@@ -56,4 +57,10 @@ public class Route {
         this.routeCost = routeCost;
     }
 
+    @Override
+    public String toString() {
+        return departureCity +
+                " " + destinationCity +
+                " " + routeCost;
+    }
 }

@@ -1,5 +1,6 @@
-package com.rawrysmode.entities;
+package com.rawrysmode.entities.order_wagon_place;
 
+import com.rawrysmode.entities.order.Order;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -76,4 +77,13 @@ public class OrderWagonPlace {
         this.insuranceCost = insuranceCost;
     }
 
+    @Override
+    public String toString() {
+        return order.getClient().getCompanyName() +
+                " " + order.getWagonNumber() +
+                " " + spaceNumber +
+                " " + size +
+                " " + weight +
+                " " + insuranceCost;
+    }
 }

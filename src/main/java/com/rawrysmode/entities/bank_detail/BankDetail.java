@@ -1,5 +1,7 @@
-package com.rawrysmode.entities;
+package com.rawrysmode.entities.bank_detail;
 
+import com.rawrysmode.entities.city.City;
+import com.rawrysmode.entities.client.Client;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -15,7 +17,7 @@ public class BankDetail {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
@@ -23,7 +25,7 @@ public class BankDetail {
     @Column(name = "bank_name", nullable = false, length = Integer.MAX_VALUE)
     private String bankName;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
@@ -82,4 +84,12 @@ public class BankDetail {
         this.bankAccount = bankAccount;
     }
 
+    @Override
+    public String toString() {
+        return client.getCompanyName() +
+                " " + bankName +
+                " " + city.getCityName() +
+                " " + tin +
+                " " + bankAccount;
+    }
 }

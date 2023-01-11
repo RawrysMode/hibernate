@@ -1,5 +1,7 @@
-package com.rawrysmode.entities;
+package com.rawrysmode.entities.employee_transfer;
 
+import com.rawrysmode.entities.employee.Employee;
+import com.rawrysmode.entities.job.Job;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -14,7 +16,7 @@ public class EmployeeTransfer {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
@@ -22,12 +24,12 @@ public class EmployeeTransfer {
     @Column(name = "transfer_reason", nullable = false, length = Integer.MAX_VALUE)
     private String transferReason;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "old_job_id", nullable = false)
     private Job oldJob;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "new_job_id", nullable = false)
     private Job newJob;
@@ -94,4 +96,14 @@ public class EmployeeTransfer {
         this.orderDate = orderDate;
     }
 
+    @Override
+    public String toString() {
+        return employee.getFirstname() +
+                " " + employee.getLastname() +
+                " " + transferReason +
+                " " + oldJob.getJobTitle() +
+                " " + newJob.getJobTitle() +
+                " " + orderNumber +
+                " " + orderDate;
+    }
 }

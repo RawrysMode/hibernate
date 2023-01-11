@@ -1,5 +1,6 @@
-package com.rawrysmode.entities;
+package com.rawrysmode.entities.employee;
 
+import com.rawrysmode.entities.job.Job;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -29,7 +30,7 @@ public class Employee {
     @Column(name = "residential_address", length = Integer.MAX_VALUE)
     private String residentialAddress;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "job_id")
     private Job job;
@@ -101,4 +102,14 @@ public class Employee {
         this.salary = salary;
     }
 
+    @Override
+    public String toString() {
+        return firstname +
+                " " + patronymic +
+                " " + lastname +
+                " " + dateOfBirth +
+                " " + residentialAddress +
+                " " + job.getJobTitle() +
+                " " + salary;
+    }
 }
