@@ -48,7 +48,7 @@ public class CityDao implements Dao<City> {
 
     @Override
     public List<City> findAll() {
-        return getCurrentSession().createQuery("from City", City.class).getResultList();
+        return getCurrentSession().createQuery("from City order by id ASC", City.class).getResultList();
     }
 
     @Override

@@ -48,7 +48,7 @@ public class OrderDao implements Dao<Order> {
 
     @Override
     public List<Order> findAll() {
-        return getCurrentSession().createQuery("from Order", Order.class).getResultList();
+        return getCurrentSession().createQuery("from Order order by id ASC", Order.class).getResultList();
     }
 
     @Override

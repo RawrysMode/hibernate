@@ -48,7 +48,7 @@ public class EmployeeTransferDao implements Dao<EmployeeTransfer> {
 
     @Override
     public List<EmployeeTransfer> findAll() {
-        return getCurrentSession().createQuery("from EmployeeTransfer", EmployeeTransfer.class).getResultList();
+        return getCurrentSession().createQuery("from EmployeeTransfer order by id ASC", EmployeeTransfer.class).getResultList();
     }
 
     @Override

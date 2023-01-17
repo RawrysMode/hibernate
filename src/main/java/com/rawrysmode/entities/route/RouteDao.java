@@ -48,7 +48,7 @@ public class RouteDao implements Dao<Route> {
 
     @Override
     public List<Route> findAll() {
-        return getCurrentSession().createQuery("from Route", Route.class).getResultList();
+        return getCurrentSession().createQuery("from Route order by id ASC", Route.class).getResultList();
     }
 
     @Override

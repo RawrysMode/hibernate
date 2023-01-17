@@ -48,7 +48,7 @@ public class ClientDao implements Dao<Client> {
 
     @Override
     public List<Client> findAll() {
-        return getCurrentSession().createQuery("from Client", Client.class).getResultList();
+        return getCurrentSession().createQuery("from Client order by id ASC", Client.class).getResultList();
     }
 
     @Override

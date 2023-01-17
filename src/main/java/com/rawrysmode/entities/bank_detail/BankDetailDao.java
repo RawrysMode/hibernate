@@ -48,7 +48,7 @@ public class BankDetailDao implements Dao<BankDetail> {
 
     @Override
     public List<BankDetail> findAll() {
-        return getCurrentSession().createQuery("from BankDetail", BankDetail.class).getResultList();
+        return getCurrentSession().createQuery("from BankDetail order by id ASC", BankDetail.class).getResultList();
     }
 
     @Override
