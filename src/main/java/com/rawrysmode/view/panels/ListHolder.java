@@ -7,25 +7,24 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class LeftPanel extends JPanel {
-    protected LeftPanel(TableHolderPanel tableHolderPanel) {
-        JList<String> tableNamesList = createTableNamesList();
-        this.add(tableNamesList);
+public class ListHolder extends JPanel {
+    protected ListHolder(TableHolder tableHolder) {
+        this.setLayout(new BorderLayout());
+        this.setPreferredSize(new Dimension(250, 0));
+        this.setBackground(MainPanel.GREY_COLOR);
 
+        JList<String> tableNamesList = createTableNamesList();
         tableNamesList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    tableHolderPanel
+                    tableHolder
                             .table.setModel(TableModelsFactory
                                     .getBuilderByName(tableNamesList.getSelectedValue()));
                 }
             }
         });
-
-        this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 30));
-        this.setPreferredSize(new Dimension(250, 0));
-        this.setBackground(MainPanel.GREY_COLOR);
+        this.add(tableNamesList, BorderLayout.CENTER);
     }
 
     private static class ListRenderer extends DefaultListCellRenderer {
@@ -43,7 +42,6 @@ public class LeftPanel extends JPanel {
     private static JList<String> createTableNamesList() {
         JList<String> tableNamesList = new JList<>(TableModelsFactory.getTableNames());
         tableNamesList.setCellRenderer(new ListRenderer());
-        tableNamesList.setFixedCellHeight(20);
         tableNamesList.setFixedCellWidth(385);
         tableNamesList.setBackground(MainPanel.GREY_COLOR);
         tableNamesList.setForeground(MainPanel.LIGHT_GREY_COLOR);

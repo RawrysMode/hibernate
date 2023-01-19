@@ -4,14 +4,15 @@ import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 
-public class TableHolderPanel extends JPanel {
+public class TableHolder extends JPanel {
 
     JTable table = new JTable();
     JScrollPane jScrollPane = new JScrollPane(table);
 
-    TableHolderPanel() {
-        this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        this.setPreferredSize(new Dimension(800, 700 - 30));
+    TableHolder() {
+        this.setLayout(new BorderLayout());
+//        this.setPreferredSize(new Dimension(800, 700 - 30));
+        this.setBackground(MainPanel.DARK_GREY_COLOR);
 
         table.setDefaultRenderer(String.class, new TableCellsRenderer());
         table.getTableHeader().setDefaultRenderer(new TableHeaderRenderer());
@@ -21,7 +22,6 @@ public class TableHolderPanel extends JPanel {
         jScrollPane.setBorder(BorderFactory.createEmptyBorder());
 
         this.add(jScrollPane, BorderLayout.CENTER);
-        this.setBackground(MainPanel.DARK_GREY_COLOR);
     }
 
     private static class TableHeaderRenderer extends JLabel implements TableCellRenderer {
