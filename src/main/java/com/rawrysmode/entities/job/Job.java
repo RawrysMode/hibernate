@@ -2,6 +2,8 @@ package com.rawrysmode.entities.job;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "jobs")
 public class Job {
@@ -35,6 +37,20 @@ public class Job {
 
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Job job = (Job) o;
+        return Objects.equals(id, job.id)
+                && jobTitle.equals(job.jobTitle);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, jobTitle);
     }
 
     @Override

@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "orders")
@@ -117,6 +118,27 @@ public class Order {
 
     public void setNvc(String nvc) {
         this.nvc = nvc;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return Objects.equals(id, order.id) &&
+                client.equals(order.client) &&
+                employee.equals(order.employee) &&
+                orderDate.equals(order.orderDate) &&
+                route.equals(order.route) &&
+                wagonNumber.equals(order.wagonNumber) &&
+                shippingDate.equals(order.shippingDate) &&
+                shippingCost.equals(order.shippingCost) &&
+                nvc.equals(order.nvc);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, client, employee, orderDate, route, wagonNumber, shippingDate, shippingCost, nvc);
     }
 
     @Override

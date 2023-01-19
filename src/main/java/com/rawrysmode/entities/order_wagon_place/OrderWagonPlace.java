@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "order_wagon_places")
 public class OrderWagonPlace {
@@ -75,6 +77,24 @@ public class OrderWagonPlace {
 
     public void setInsuranceCost(Integer insuranceCost) {
         this.insuranceCost = insuranceCost;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderWagonPlace that = (OrderWagonPlace) o;
+        return Objects.equals(id, that.id) &&
+                order.equals(that.order) &&
+                spaceNumber.equals(that.spaceNumber) &&
+                size.equals(that.size) &&
+                weight.equals(that.weight) &&
+                insuranceCost.equals(that.insuranceCost);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, order, spaceNumber, size, weight, insuranceCost);
     }
 
     @Override

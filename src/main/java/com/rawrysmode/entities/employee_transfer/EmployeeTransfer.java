@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "employee_transfers")
@@ -94,6 +95,25 @@ public class EmployeeTransfer {
 
     public void setOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EmployeeTransfer that = (EmployeeTransfer) o;
+        return Objects.equals(id, that.id) &&
+                employee.equals(that.employee) &&
+                transferReason.equals(that.transferReason) &&
+                oldJob.equals(that.oldJob) &&
+                newJob.equals(that.newJob) &&
+                orderNumber.equals(that.orderNumber) &&
+                orderDate.equals(that.orderDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, employee, transferReason, oldJob, newJob, orderNumber, orderDate);
     }
 
     @Override

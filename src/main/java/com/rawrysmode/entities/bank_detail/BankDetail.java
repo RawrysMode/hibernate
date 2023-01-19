@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "bank_details", indexes = {
         @Index(name = "bank_details_tin_key", columnList = "tin", unique = true),
@@ -82,6 +84,24 @@ public class BankDetail {
 
     public void setBankAccount(String bankAccount) {
         this.bankAccount = bankAccount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BankDetail that = (BankDetail) o;
+        return Objects.equals(id, that.id) &&
+                client.equals(that.client) &&
+                bankName.equals(that.bankName) &&
+                city.equals(that.city) &&
+                tin.equals(that.tin) &&
+                bankAccount.equals(that.bankAccount);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, client, bankName, city, tin, bankAccount);
     }
 
     @Override

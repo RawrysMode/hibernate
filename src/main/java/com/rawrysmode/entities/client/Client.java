@@ -2,6 +2,8 @@ package com.rawrysmode.entities.client;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "clients")
 public class Client {
@@ -71,6 +73,24 @@ public class Client {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return Objects.equals(id, client.id) &&
+                companyName.equals(client.companyName) &&
+                postalAddress.equals(client.postalAddress) &&
+                phoneNumber.equals(client.phoneNumber) &&
+                faxNumber.equals(client.faxNumber)
+                && email.equals(client.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, companyName, postalAddress, phoneNumber, faxNumber, email);
     }
 
     @Override

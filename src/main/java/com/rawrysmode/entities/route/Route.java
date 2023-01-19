@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "routes")
 public class Route {
@@ -55,6 +57,22 @@ public class Route {
 
     public void setRouteCost(Integer routeCost) {
         this.routeCost = routeCost;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Route route = (Route) o;
+        return Objects.equals(id, route.id) &&
+                departureCity.equals(route.departureCity) &&
+                destinationCity.equals(route.destinationCity) &&
+                routeCost.equals(route.routeCost);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, departureCity, destinationCity, routeCost);
     }
 
     @Override

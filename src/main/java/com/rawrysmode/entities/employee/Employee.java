@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "employees")
@@ -66,6 +67,10 @@ public class Employee {
         return lastname;
     }
 
+    public String getFirstAndLastName() {
+        return firstname + " " + lastname;
+    }
+
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
@@ -100,6 +105,26 @@ public class Employee {
 
     public void setSalary(Integer salary) {
         this.salary = salary;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(id, employee.id) &&
+                firstname.equals(employee.firstname) &&
+                patronymic.equals(employee.patronymic) &&
+                lastname.equals(employee.lastname) &&
+                dateOfBirth.equals(employee.dateOfBirth) &&
+                residentialAddress.equals(employee.residentialAddress) &&
+                job.equals(employee.job) &&
+                salary.equals(employee.salary);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstname, patronymic, lastname, dateOfBirth, residentialAddress, job, salary);
     }
 
     @Override
