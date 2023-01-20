@@ -24,21 +24,24 @@ public class CityTableModel extends AbstractTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return String.class;
+        return getValueAt(0, columnIndex).getClass();
     }
 
     @Override
-    public String getValueAt(int rowIndex, int columnIndex) {
+    public Object getValueAt(int rowIndex, int columnIndex) {
         return cityList.get(rowIndex).getCityName();
     }
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        if (columnIndex == 0) {
-            cityList.get(rowIndex).setCityName((String) aValue);
-            cityService.update(cityList.get(rowIndex));
-        }
+        cityList.get(rowIndex).setCityName((String) aValue);
+        cityService.update(cityList.get(rowIndex));
         fireTableDataChanged();
+    }
+
+    @Override
+    public String getColumnName(int column) {
+        return "Название города";
     }
 
     @Override
