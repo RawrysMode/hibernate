@@ -95,10 +95,6 @@ public class Client {
 
     @Override
     public String toString() {
-        return companyName +
-                " " + postalAddress +
-                " " + phoneNumber +
-                " " + faxNumber +
-                " " + email;
+        return companyName;
     }
 }

@@ -130,11 +130,6 @@ public class Employee {
     @Override
     public String toString() {
         return firstname +
-                " " + patronymic +
-                " " + lastname +
-                " " + dateOfBirth +
-                " " + residentialAddress +
-                " " + job.getJobTitle() +
-                " " + salary;
+                " " + lastname;
     }
 }

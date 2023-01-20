@@ -144,14 +144,6 @@ public class Order {
     @Override
     public String toString() {
         return client.getCompanyName() +
-                " " + employee.getFirstname() +
-                " " + employee.getLastname() +
-                " " + orderDate +
-                " " + route.getDepartureCity() +
-                " " + route.getDestinationCity() +
-                " " + wagonNumber +
-                " " + shippingDate +
-                " " + shippingCost +
-                " " + nvc;
+                ", №" + wagonNumber;
     }
 }

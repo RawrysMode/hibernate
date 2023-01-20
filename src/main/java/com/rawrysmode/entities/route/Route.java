@@ -78,7 +78,6 @@ public class Route {
     @Override
     public String toString() {
         return departureCity +
-                " " + destinationCity +
-                " " + routeCost;
+                " -> " + destinationCity;
     }
 }
