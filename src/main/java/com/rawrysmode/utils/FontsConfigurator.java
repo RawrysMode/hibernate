@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FontsConfigurator {
+
     public FontsConfigurator() {
         final GraphicsEnvironment GE = GraphicsEnvironment.getLocalGraphicsEnvironment();
         final ArrayList<String> AVAILABLE_FONT_FAMILY_NAMES = new ArrayList<>(Arrays.asList(GE.getAvailableFontFamilyNames()));
@@ -33,4 +34,5 @@ public class FontsConfigurator {
             exception.printStackTrace();
         }
     }
+
 }
