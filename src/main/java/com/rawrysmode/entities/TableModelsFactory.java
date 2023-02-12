@@ -10,9 +10,10 @@ import com.rawrysmode.entities.order.OrderTableModel;
 import com.rawrysmode.entities.order_wagon_place.OrderWagonPlaceTableModel;
 import com.rawrysmode.entities.route.RouteTableModel;
 
-import javax.swing.table.TableModel;
+import javax.swing.table.AbstractTableModel;
 
 public class TableModelsFactory {
+
     public static String[] getTableNames() {
         return new String[]{
                 "Cities",
@@ -27,7 +28,7 @@ public class TableModelsFactory {
         };
     }
 
-    public static TableModel getBuilderByName(String tableName) {
+    public static AbstractTableModel getBuilderByName(String tableName) {
         return switch (tableName) {
             case "Bank Details" -> new BankDetailTableModel();
             case "Cities" -> new CityTableModel();
@@ -41,4 +42,5 @@ public class TableModelsFactory {
             default -> null;
         };
     }
+
 }
