@@ -3,6 +3,7 @@ package com.rawrysmode.entities.order;
 import java.util.List;
 
 public class OrderService {
+
     private static OrderDao orderDAO;
 
     public OrderService() {
@@ -16,18 +17,16 @@ public class OrderService {
         return true;
     }
 
-    public boolean update(Order entity) {
+    public void update(Order entity) {
         orderDAO.openCurrentSessionWithTransaction();
         orderDAO.update(entity);
         orderDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
-    public boolean delete(Order entity) {
+    public void delete(Order entity) {
         orderDAO.openCurrentSessionWithTransaction();
         orderDAO.delete(entity);
         orderDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
     public List<Order> findAll() {
@@ -50,4 +49,5 @@ public class OrderService {
         orderDAO.closeCurrentSession();
         return result;
     }
+
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import static com.rawrysmode.utils.HibernateUtils.getSessionFactory;
 
 public class OrderDao implements Dao<Order> {
+
     private Session currentSession;
     private Transaction currentTransaction;
 
@@ -22,18 +23,6 @@ public class OrderDao implements Dao<Order> {
 
     public Session getCurrentSession() {
         return currentSession;
-    }
-
-    public void setCurrentSession(Session currentSession) {
-        this.currentSession = currentSession;
-    }
-
-    public Transaction getCurrentTransaction() {
-        return currentTransaction;
-    }
-
-    public void setCurrentTransaction(Transaction currentTransaction) {
-        this.currentTransaction = currentTransaction;
     }
 
     public void openCurrentSessionWithTransaction() {
@@ -59,8 +48,8 @@ public class OrderDao implements Dao<Order> {
                                 "upper(o.employee.firstname) like :param or " +
                                 "upper(o.employee.lastname) like :param or " +
                                 "cast(o.orderDate as string) like :param or " +
-                                "upper(o.route.departureCity) like :param or " +
-                                "upper(o.route.destinationCity) like :param or " +
+                                "upper(o.route.departureCity.cityName) like :param or " +
+                                "upper(o.route.destinationCity.cityName) like :param or " +
                                 "cast(o.wagonNumber as string) like :param or " +
                                 "cast(o.shippingDate as string) like :param or " +
                                 "cast(o.shippingCost as string) like :param or " +
@@ -91,4 +80,5 @@ public class OrderDao implements Dao<Order> {
         getCurrentSession().remove(entity);
         return true;
     }
+
 }

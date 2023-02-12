@@ -14,6 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "orders")
 public class Order {
+
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -146,4 +147,5 @@ public class Order {
         return client.getCompanyName() +
                 ", №" + wagonNumber;
     }
+
 }
