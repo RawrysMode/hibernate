@@ -3,6 +3,7 @@ package com.rawrysmode.entities.order_wagon_place;
 import java.util.List;
 
 public class OrderWagonPlaceService {
+
     private static OrderWagonPlaceDao orderWagonPlaceDAO;
 
     public OrderWagonPlaceService() {
@@ -16,18 +17,16 @@ public class OrderWagonPlaceService {
         return true;
     }
 
-    public boolean update(OrderWagonPlace entity) {
+    public void update(OrderWagonPlace entity) {
         orderWagonPlaceDAO.openCurrentSessionWithTransaction();
         orderWagonPlaceDAO.update(entity);
         orderWagonPlaceDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
-    public boolean delete(OrderWagonPlace entity) {
+    public void delete(OrderWagonPlace entity) {
         orderWagonPlaceDAO.openCurrentSessionWithTransaction();
         orderWagonPlaceDAO.delete(entity);
         orderWagonPlaceDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
     public List<OrderWagonPlace> findAll() {
@@ -50,4 +49,5 @@ public class OrderWagonPlaceService {
         orderWagonPlaceDAO.closeCurrentSession();
         return result;
     }
+
 }

@@ -1,17 +1,19 @@
 package com.rawrysmode.entities.order_wagon_place;
 
+import com.rawrysmode.entities.CustomTableModel;
+import com.rawrysmode.entities.TableEntity;
 import com.rawrysmode.entities.order.Order;
 
-import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
-public class OrderWagonPlaceTableModel extends AbstractTableModel {
+public class OrderWagonPlaceTableModel extends CustomTableModel<OrderWagonPlace> {
+
     private final OrderWagonPlaceService orderWagonPlaceService;
-    private final List<OrderWagonPlace> orderWagonPlaceList;
+    private List<TableEntity<OrderWagonPlace>> orderWagonPlaceList;
 
     public OrderWagonPlaceTableModel() {
         orderWagonPlaceService = new OrderWagonPlaceService();
-        orderWagonPlaceList = orderWagonPlaceService.findAll();
+        orderWagonPlaceList = wrapList(orderWagonPlaceService.findAll());
     }
 
     @Override
@@ -32,37 +34,22 @@ public class OrderWagonPlaceTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return switch (columnIndex) {
-            case 0 -> orderWagonPlaceList.get(rowIndex).getOrder();
-            case 1 -> orderWagonPlaceList.get(rowIndex).getSpaceNumber();
-            case 2 -> orderWagonPlaceList.get(rowIndex).getSize();
-            case 3 -> orderWagonPlaceList.get(rowIndex).getWeight();
-            case 4 -> orderWagonPlaceList.get(rowIndex).getInsuranceCost();
+            case 0 -> orderWagonPlaceList.get(rowIndex).getEntity().getOrder();
+            case 1 -> orderWagonPlaceList.get(rowIndex).getEntity().getSpaceNumber();
+            case 2 -> orderWagonPlaceList.get(rowIndex).getEntity().getSize();
+            case 3 -> orderWagonPlaceList.get(rowIndex).getEntity().getWeight();
+            case 4 -> orderWagonPlaceList.get(rowIndex).getEntity().getInsuranceCost();
             default -> "Not found";
         };
     }
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         switch (columnIndex) {
-            case 0 -> {
-                orderWagonPlaceList.get(rowIndex).setOrder((Order) aValue);
-                orderWagonPlaceService.update(orderWagonPlaceList.get(rowIndex));
-            }
-            case 1 -> {
-                orderWagonPlaceList.get(rowIndex).setSpaceNumber((Integer) aValue);
-                orderWagonPlaceService.update(orderWagonPlaceList.get(rowIndex));
-            }
-            case 2 -> {
-                orderWagonPlaceList.get(rowIndex).setSize((String) aValue);
-                orderWagonPlaceService.update(orderWagonPlaceList.get(rowIndex));
-            }
-            case 3 -> {
-                orderWagonPlaceList.get(rowIndex).setWeight((String) aValue);
-                orderWagonPlaceService.update(orderWagonPlaceList.get(rowIndex));
-            }
-            case 4 -> {
-                orderWagonPlaceList.get(rowIndex).setInsuranceCost((Integer) aValue);
-                orderWagonPlaceService.update(orderWagonPlaceList.get(rowIndex));
-            }
+            case 0 -> orderWagonPlaceList.get(rowIndex).getEntity().setOrder((Order) aValue);
+            case 1 -> orderWagonPlaceList.get(rowIndex).getEntity().setSpaceNumber((Integer) aValue);
+            case 2 -> orderWagonPlaceList.get(rowIndex).getEntity().setSize((String) aValue);
+            case 3 -> orderWagonPlaceList.get(rowIndex).getEntity().setWeight((String) aValue);
+            case 4 -> orderWagonPlaceList.get(rowIndex).getEntity().setInsuranceCost((Integer) aValue);
         }
         fireTableDataChanged();
     }
@@ -83,4 +70,56 @@ public class OrderWagonPlaceTableModel extends AbstractTableModel {
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return true;
     }
+
+    @Override
+    public void findWhere(String request) {
+        orderWagonPlaceList = wrapList(orderWagonPlaceService.findWhere(request));
+        fireTableDataChanged();
+    }
+
+    @Override
+    public void createRow() {
+        orderWagonPlaceList.add(new TableEntity<>(new OrderWagonPlace(), true));
+        fireTableDataChanged();
+    }
+
+    @Override
+    public void removeRow(int rowIndex) {
+        orderWagonPlaceService.delete(orderWagonPlaceList.remove(rowIndex).getEntity());
+        fireTableRowsDeleted(rowIndex, rowIndex);
+    }
+
+
+    @Override
+    public boolean hasChanged(int row) {
+        return orderWagonPlaceList.get(row).hasChanged();
+    }
+
+    @Override
+    public void setHasChanged(int row) {
+        orderWagonPlaceList.get(row).setHasChanged(true);
+    }
+
+    @Override
+    public boolean isCreated(int row) {
+        return orderWagonPlaceList.get(row).isCreated();
+    }
+
+    @Override
+    public void setCreated(int row) {
+        orderWagonPlaceList.get(row).setCreated(true);
+    }
+
+    @Override
+    public void save(int[] rows) {
+        for (int row : rows) {
+            TableEntity<OrderWagonPlace> tableEntity = orderWagonPlaceList.get(row);
+            if (tableEntity.isCreated() || tableEntity.hasChanged()) {
+                orderWagonPlaceService.update(tableEntity.getEntity());
+                tableEntity.setCreated(false);
+                tableEntity.setHasChanged(false);
+            }
+        }
+    }
+
 }

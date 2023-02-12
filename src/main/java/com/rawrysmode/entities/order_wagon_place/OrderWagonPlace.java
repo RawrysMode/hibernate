@@ -10,6 +10,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "order_wagon_places")
 public class OrderWagonPlace {
+
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -106,4 +107,5 @@ public class OrderWagonPlace {
                 " " + weight +
                 " " + insuranceCost;
     }
+
 }
