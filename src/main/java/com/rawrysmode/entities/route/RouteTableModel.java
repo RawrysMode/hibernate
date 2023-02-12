@@ -1,17 +1,19 @@
 package com.rawrysmode.entities.route;
 
+import com.rawrysmode.entities.CustomTableModel;
+import com.rawrysmode.entities.TableEntity;
 import com.rawrysmode.entities.city.City;
 
-import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
-public class RouteTableModel extends AbstractTableModel {
+public class RouteTableModel extends CustomTableModel<Route> {
+
     private final RouteService routeService;
-    private final List<Route> routeList;
+    private List<TableEntity<Route>> routeList;
 
     public RouteTableModel() {
         routeService = new RouteService();
-        routeList = routeService.findAll();
+        routeList = wrapList(routeService.findAll());
     }
 
     @Override
@@ -32,29 +34,21 @@ public class RouteTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return switch (columnIndex) {
-            case 0 -> routeList.get(rowIndex).getDepartureCity();
-            case 1 -> routeList.get(rowIndex).getDestinationCity();
-            case 2 -> routeList.get(rowIndex).getRouteCost();
+            case 0 -> routeList.get(rowIndex).getEntity().getDepartureCity();
+            case 1 -> routeList.get(rowIndex).getEntity().getDestinationCity();
+            case 2 -> routeList.get(rowIndex).getEntity().getRouteCost();
             default -> "Not found";
         };
     }
 
+    @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         switch (columnIndex) {
-            case 0 -> {
-                routeList.get(rowIndex).setDepartureCity((City) aValue);
-                routeService.update(routeList.get(rowIndex));
-            }
-            case 1 -> {
-                routeList.get(rowIndex).setDestinationCity((City) aValue);
-                routeService.update(routeList.get(rowIndex));
-            }
-            case 2 -> {
-                routeList.get(rowIndex).setRouteCost((Integer) aValue);
-                routeService.update(routeList.get(rowIndex));
-            }
+            case 0 -> routeList.get(rowIndex).getEntity().setDepartureCity((City) aValue);
+            case 1 -> routeList.get(rowIndex).getEntity().setDestinationCity((City) aValue);
+            case 2 -> routeList.get(rowIndex).getEntity().setRouteCost((Integer) aValue);
         }
-        fireTableDataChanged();
+        fireTableCellUpdated(rowIndex, columnIndex);
     }
 
     @Override
@@ -71,4 +65,56 @@ public class RouteTableModel extends AbstractTableModel {
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return true;
     }
+
+    @Override
+    public void findWhere(String request) {
+        routeList = wrapList(routeService.findWhere(request));
+        fireTableDataChanged();
+    }
+
+    @Override
+    public void createRow() {
+        routeList.add(new TableEntity<>(new Route(), true));
+        fireTableDataChanged();
+    }
+
+    @Override
+    public void removeRow(int rowIndex) {
+        routeService.delete(routeList.remove(rowIndex).getEntity());
+        fireTableRowsDeleted(rowIndex, rowIndex);
+    }
+
+
+    @Override
+    public boolean hasChanged(int row) {
+        return routeList.get(row).hasChanged();
+    }
+
+    @Override
+    public void setHasChanged(int row) {
+        routeList.get(row).setHasChanged(true);
+    }
+
+    @Override
+    public boolean isCreated(int row) {
+        return routeList.get(row).isCreated();
+    }
+
+    @Override
+    public void setCreated(int row) {
+        routeList.get(row).setCreated(true);
+    }
+
+    @Override
+    public void save(int[] rows) {
+        for (int row : rows) {
+            TableEntity<Route> tableEntity = routeList.get(row);
+            if (tableEntity.isCreated() || tableEntity.hasChanged()) {
+                routeService.update(tableEntity.getEntity());
+                tableEntity.setCreated(false);
+                tableEntity.setHasChanged(false);
+            }
+        }
+    }
+
 }

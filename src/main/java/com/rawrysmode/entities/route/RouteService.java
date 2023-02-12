@@ -3,6 +3,7 @@ package com.rawrysmode.entities.route;
 import java.util.List;
 
 public class RouteService {
+
     private static RouteDao routeDAO;
 
     public RouteService() {
@@ -16,18 +17,16 @@ public class RouteService {
         return true;
     }
 
-    public boolean update(Route entity) {
+    public void update(Route entity) {
         routeDAO.openCurrentSessionWithTransaction();
         routeDAO.update(entity);
         routeDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
-    public boolean delete(Route entity) {
+    public void delete(Route entity) {
         routeDAO.openCurrentSessionWithTransaction();
         routeDAO.delete(entity);
         routeDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
     public List<Route> findAll() {
@@ -50,4 +49,5 @@ public class RouteService {
         routeDAO.closeCurrentSession();
         return result;
     }
+
 }

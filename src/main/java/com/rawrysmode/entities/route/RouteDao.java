@@ -9,6 +9,7 @@ import java.util.List;
 import static com.rawrysmode.utils.HibernateUtils.getSessionFactory;
 
 public class RouteDao implements Dao<Route> {
+
     private Session currentSession;
     private Transaction currentTransaction;
 
@@ -22,18 +23,6 @@ public class RouteDao implements Dao<Route> {
 
     public Session getCurrentSession() {
         return currentSession;
-    }
-
-    public void setCurrentSession(Session currentSession) {
-        this.currentSession = currentSession;
-    }
-
-    public Transaction getCurrentTransaction() {
-        return currentTransaction;
-    }
-
-    public void setCurrentTransaction(Transaction currentTransaction) {
-        this.currentTransaction = currentTransaction;
     }
 
     public void openCurrentSessionWithTransaction() {
@@ -55,8 +44,8 @@ public class RouteDao implements Dao<Route> {
     public List<Route> findWhere(String s) {
         return getCurrentSession().createQuery(
                         "from Route r where " +
-                                "upper(r.departureCity) like :param or " +
-                                "upper(r.destinationCity) like :param or " +
+                                "upper(r.departureCity.cityName) like :param or " +
+                                "upper(r.destinationCity.cityName) like :param or " +
                                 "cast(r.routeCost as string) like :param", Route.class)
                 .setParameter("param", "%" + s.toUpperCase() + "%")
                 .getResultList();
@@ -84,4 +73,5 @@ public class RouteDao implements Dao<Route> {
         getCurrentSession().remove(entity);
         return true;
     }
+
 }

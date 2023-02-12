@@ -10,6 +10,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "routes")
 public class Route {
+
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -26,6 +27,16 @@ public class Route {
 
     @Column(name = "route_cost", nullable = false)
     private Integer routeCost;
+
+    public Route() {
+
+    }
+
+    public Route(City departureCity, City destinationCity, Integer routeCost) {
+        this.departureCity = departureCity;
+        this.destinationCity = destinationCity;
+        this.routeCost = routeCost;
+    }
 
     public Integer getId() {
         return id;
@@ -80,4 +91,5 @@ public class Route {
         return departureCity +
                 " -> " + destinationCity;
     }
+
 }
