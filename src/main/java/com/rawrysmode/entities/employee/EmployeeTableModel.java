@@ -1,18 +1,20 @@
 package com.rawrysmode.entities.employee;
 
+import com.rawrysmode.entities.CustomTableModel;
+import com.rawrysmode.entities.TableEntity;
 import com.rawrysmode.entities.job.Job;
 
-import javax.swing.table.AbstractTableModel;
 import java.time.LocalDate;
 import java.util.List;
 
-public class EmployeeTableModel extends AbstractTableModel {
+public class EmployeeTableModel extends CustomTableModel<Employee> {
+
     private final EmployeeService employeeService;
-    private final List<Employee> employeeList;
+    private List<TableEntity<Employee>> employeeList;
 
     public EmployeeTableModel() {
         employeeService = new EmployeeService();
-        employeeList = employeeService.findAll();
+        employeeList = wrapList(employeeService.findAll());
     }
 
     @Override
@@ -33,47 +35,26 @@ public class EmployeeTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return switch (columnIndex) {
-            case 0 -> employeeList.get(rowIndex).getFirstname();
-            case 1 -> employeeList.get(rowIndex).getPatronymic();
-            case 2 -> employeeList.get(rowIndex).getLastname();
-            case 3 -> employeeList.get(rowIndex).getDateOfBirth();
-            case 4 -> employeeList.get(rowIndex).getResidentialAddress();
-            case 5 -> employeeList.get(rowIndex).getJob();
-            case 6 -> employeeList.get(rowIndex).getSalary();
+            case 0 -> employeeList.get(rowIndex).getEntity().getFirstname();
+            case 1 -> employeeList.get(rowIndex).getEntity().getPatronymic();
+            case 2 -> employeeList.get(rowIndex).getEntity().getLastname();
+            case 3 -> employeeList.get(rowIndex).getEntity().getDateOfBirth();
+            case 4 -> employeeList.get(rowIndex).getEntity().getResidentialAddress();
+            case 5 -> employeeList.get(rowIndex).getEntity().getJob();
+            case 6 -> employeeList.get(rowIndex).getEntity().getSalary();
             default -> "Not found";
         };
     }
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         switch (columnIndex) {
-            case 0 -> {
-                employeeList.get(rowIndex).setFirstname((String) aValue);
-                employeeService.update(employeeList.get(rowIndex));
-            }
-            case 1 -> {
-                employeeList.get(rowIndex).setPatronymic((String) aValue);
-                employeeService.update(employeeList.get(rowIndex));
-            }
-            case 2 -> {
-                employeeList.get(rowIndex).setLastname((String) aValue);
-                employeeService.update(employeeList.get(rowIndex));
-            }
-            case 3 -> {
-                employeeList.get(rowIndex).setDateOfBirth(LocalDate.parse((String) aValue));
-                employeeService.update(employeeList.get(rowIndex));
-            }
-            case 4 -> {
-                employeeList.get(rowIndex).setResidentialAddress((String) aValue);
-                employeeService.update(employeeList.get(rowIndex));
-            }
-            case 5 -> {
-                employeeList.get(rowIndex).setJob((Job) aValue);
-                employeeService.update(employeeList.get(rowIndex));
-            }
-            case 6 -> {
-                employeeList.get(rowIndex).setSalary((Integer) aValue);
-                employeeService.update(employeeList.get(rowIndex));
-            }
+            case 0 -> employeeList.get(rowIndex).getEntity().setFirstname((String) aValue);
+            case 1 -> employeeList.get(rowIndex).getEntity().setPatronymic((String) aValue);
+            case 2 -> employeeList.get(rowIndex).getEntity().setLastname((String) aValue);
+            case 3 -> employeeList.get(rowIndex).getEntity().setDateOfBirth(LocalDate.parse((String) aValue));
+            case 4 -> employeeList.get(rowIndex).getEntity().setResidentialAddress((String) aValue);
+            case 5 -> employeeList.get(rowIndex).getEntity().setJob((Job) aValue);
+            case 6 -> employeeList.get(rowIndex).getEntity().setSalary((Integer) aValue);
         }
         fireTableDataChanged();
     }
@@ -96,4 +77,56 @@ public class EmployeeTableModel extends AbstractTableModel {
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return true;
     }
+
+    @Override
+    public void findWhere(String request) {
+        employeeList = wrapList(employeeService.findWhere(request));
+        fireTableDataChanged();
+    }
+
+    @Override
+    public void createRow() {
+        employeeList.add(new TableEntity<>(new Employee(), true));
+        fireTableDataChanged();
+    }
+
+    @Override
+    public void removeRow(int rowIndex) {
+        employeeService.delete(employeeList.remove(rowIndex).getEntity());
+        fireTableRowsDeleted(rowIndex, rowIndex);
+    }
+
+
+    @Override
+    public boolean hasChanged(int row) {
+        return employeeList.get(row).hasChanged();
+    }
+
+    @Override
+    public void setHasChanged(int row) {
+        employeeList.get(row).setHasChanged(true);
+    }
+
+    @Override
+    public boolean isCreated(int row) {
+        return employeeList.get(row).isCreated();
+    }
+
+    @Override
+    public void setCreated(int row) {
+        employeeList.get(row).setCreated(true);
+    }
+
+    @Override
+    public void save(int[] rows) {
+        for (int row : rows) {
+            TableEntity<Employee> tableEntity = employeeList.get(row);
+            if (tableEntity.isCreated() || tableEntity.hasChanged()) {
+                employeeService.update(tableEntity.getEntity());
+                tableEntity.setCreated(false);
+                tableEntity.setHasChanged(false);
+            }
+        }
+    }
+
 }

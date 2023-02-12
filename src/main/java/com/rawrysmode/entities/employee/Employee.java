@@ -11,6 +11,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "employees")
 public class Employee {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -65,10 +66,6 @@ public class Employee {
 
     public String getLastname() {
         return lastname;
-    }
-
-    public String getFirstAndLastName() {
-        return firstname + " " + lastname;
     }
 
     public void setLastname(String lastname) {
@@ -132,4 +129,5 @@ public class Employee {
         return firstname +
                 " " + lastname;
     }
+
 }
