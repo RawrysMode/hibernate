@@ -3,31 +3,29 @@ package com.rawrysmode.entities.city;
 import java.util.List;
 
 public class CityService {
+
     private static CityDao cityDAO;
 
     public CityService() {
         cityDAO = new CityDao();
     }
 
-    public boolean save(City entity) {
+    public void save(City entity) {
         cityDAO.openCurrentSessionWithTransaction();
         cityDAO.save(entity);
         cityDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
-    public boolean update(City entity) {
+    public void update(City entity) {
         cityDAO.openCurrentSessionWithTransaction();
         cityDAO.update(entity);
         cityDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
-    public boolean delete(City entity) {
+    public void delete(City entity) {
         cityDAO.openCurrentSessionWithTransaction();
         cityDAO.delete(entity);
         cityDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
     public List<City> findAll() {
@@ -50,4 +48,5 @@ public class CityService {
         cityDAO.closeCurrentSession();
         return result;
     }
+
 }
