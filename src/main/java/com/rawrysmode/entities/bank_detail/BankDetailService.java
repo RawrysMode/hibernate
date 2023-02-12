@@ -3,6 +3,7 @@ package com.rawrysmode.entities.bank_detail;
 import java.util.List;
 
 public class BankDetailService {
+
     private static BankDetailDao bankDetailDAO;
 
     public BankDetailService() {
@@ -16,18 +17,16 @@ public class BankDetailService {
         return true;
     }
 
-    public boolean update(BankDetail entity) {
+    public void update(BankDetail entity) {
         bankDetailDAO.openCurrentSessionWithTransaction();
         bankDetailDAO.update(entity);
         bankDetailDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
-    public boolean delete(BankDetail entity) {
+    public void delete(BankDetail entity) {
         bankDetailDAO.openCurrentSessionWithTransaction();
         bankDetailDAO.delete(entity);
         bankDetailDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
     public List<BankDetail> findAll() {
@@ -50,4 +49,5 @@ public class BankDetailService {
         bankDetailDAO.closeCurrentSession();
         return result;
     }
+
 }

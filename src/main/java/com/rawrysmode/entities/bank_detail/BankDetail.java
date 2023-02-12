@@ -14,6 +14,7 @@ import java.util.Objects;
         @Index(name = "bank_details_bank_account_key", columnList = "bank_account", unique = true)
 })
 public class BankDetail {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -112,4 +113,5 @@ public class BankDetail {
                 " " + tin +
                 " " + bankAccount;
     }
+
 }
