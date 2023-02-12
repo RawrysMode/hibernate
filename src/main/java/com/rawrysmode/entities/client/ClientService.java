@@ -3,6 +3,7 @@ package com.rawrysmode.entities.client;
 import java.util.List;
 
 public class ClientService {
+
     private static ClientDao clientDAO;
 
     public ClientService() {
@@ -16,18 +17,16 @@ public class ClientService {
         return true;
     }
 
-    public boolean update(Client entity) {
+    public void update(Client entity) {
         clientDAO.openCurrentSessionWithTransaction();
         clientDAO.update(entity);
         clientDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
-    public boolean delete(Client entity) {
+    public void delete(Client entity) {
         clientDAO.openCurrentSessionWithTransaction();
         clientDAO.delete(entity);
         clientDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
     public List<Client> findAll() {
@@ -50,4 +49,5 @@ public class ClientService {
         clientDAO.closeCurrentSession();
         return result;
     }
+
 }
