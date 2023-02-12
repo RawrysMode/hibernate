@@ -1,6 +1,8 @@
 package com.rawrysmode.view.panels;
 
+import com.rawrysmode.assets.colors.CustomColors;
 import com.rawrysmode.entities.TableModelsFactory;
+import com.rawrysmode.view.components.CustomTable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,26 +10,39 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ListHolder extends JPanel {
-    protected ListHolder(TableHolder tableHolder) {
-        this.setLayout(new BorderLayout());
-        this.setPreferredSize(new Dimension(250, 0));
-        this.setBackground(MainPanel.GREY_COLOR);
+
+    public static boolean isEnabled = true;
+
+    protected ListHolder(CustomTable customTable) {
+        setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(250, 0));
+        setBackground(CustomColors.GREY_COLOR);
 
         JList<String> tableNamesList = createTableNamesList();
+
         tableNamesList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    tableHolder
-                            .table.setModel(TableModelsFactory
-                                    .getBuilderByName(tableNamesList.getSelectedValue()));
+                if (e.getClickCount() == 2 && isEnabled) {
+                    customTable.setModel(TableModelsFactory
+                            .getBuilderByName(tableNamesList.getSelectedValue()));
                 }
             }
         });
-        this.add(tableNamesList, BorderLayout.CENTER);
+        add(tableNamesList, BorderLayout.CENTER);
+    }
+
+    private static JList<String> createTableNamesList() {
+        JList<String> tableNamesList = new JList<>(TableModelsFactory.getTableNames());
+        tableNamesList.setCellRenderer(new ListRenderer());
+        tableNamesList.setFixedCellWidth(385);
+        tableNamesList.setBackground(CustomColors.GREY_COLOR);
+        tableNamesList.setForeground(CustomColors.LIGHT_GREY_COLOR);
+        return tableNamesList;
     }
 
     private static class ListRenderer extends DefaultListCellRenderer {
+
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             JLabel label = (JLabel) super.getListCellRendererComponent(
@@ -37,14 +52,7 @@ public class ListHolder extends JPanel {
             label.setFont(new Font("JetBrains Mono Medium", Font.PLAIN, 12));
             return label;
         }
+
     }
 
-    private static JList<String> createTableNamesList() {
-        JList<String> tableNamesList = new JList<>(TableModelsFactory.getTableNames());
-        tableNamesList.setCellRenderer(new ListRenderer());
-        tableNamesList.setFixedCellWidth(385);
-        tableNamesList.setBackground(MainPanel.GREY_COLOR);
-        tableNamesList.setForeground(MainPanel.LIGHT_GREY_COLOR);
-        return tableNamesList;
-    }
 }
