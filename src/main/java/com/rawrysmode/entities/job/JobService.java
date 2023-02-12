@@ -3,6 +3,7 @@ package com.rawrysmode.entities.job;
 import java.util.List;
 
 public class JobService {
+
     private static JobDao jobDAO;
 
     public JobService() {
@@ -16,18 +17,16 @@ public class JobService {
         return true;
     }
 
-    public boolean update(Job entity) {
+    public void update(Job entity) {
         jobDAO.openCurrentSessionWithTransaction();
         jobDAO.update(entity);
         jobDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
-    public boolean delete(Job entity) {
+    public void delete(Job entity) {
         jobDAO.openCurrentSessionWithTransaction();
         jobDAO.delete(entity);
         jobDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
     public List<Job> findAll() {
@@ -50,4 +49,5 @@ public class JobService {
         jobDAO.closeCurrentSession();
         return result;
     }
+
 }

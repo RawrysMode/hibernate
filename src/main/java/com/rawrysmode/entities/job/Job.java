@@ -7,6 +7,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "jobs")
 public class Job {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
+    @Column(name = "job_title", nullable = false, length = Integer.MAX_VALUE)
+    private String jobTitle;
+
     public Job(String jobTitle) {
         this.jobTitle = jobTitle;
     }
@@ -14,14 +22,6 @@ public class Job {
     public Job() {
 
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Integer id;
-
-    @Column(name = "job_title", nullable = false, length = Integer.MAX_VALUE)
-    private String jobTitle;
 
     public Integer getId() {
         return id;
@@ -57,4 +57,5 @@ public class Job {
     public String toString() {
         return jobTitle;
     }
+
 }

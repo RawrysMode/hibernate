@@ -9,6 +9,7 @@ import java.util.List;
 import static com.rawrysmode.utils.HibernateUtils.getSessionFactory;
 
 public class JobDao implements Dao<Job> {
+
     private Session currentSession;
     private Transaction currentTransaction;
 
@@ -22,18 +23,6 @@ public class JobDao implements Dao<Job> {
 
     public Session getCurrentSession() {
         return currentSession;
-    }
-
-    public void setCurrentSession(Session currentSession) {
-        this.currentSession = currentSession;
-    }
-
-    public Transaction getCurrentTransaction() {
-        return currentTransaction;
-    }
-
-    public void setCurrentTransaction(Transaction currentTransaction) {
-        this.currentTransaction = currentTransaction;
     }
 
     public void openCurrentSessionWithTransaction() {
@@ -80,4 +69,5 @@ public class JobDao implements Dao<Job> {
         getCurrentSession().remove(entity);
         return true;
     }
+
 }
