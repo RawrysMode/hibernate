@@ -1,19 +1,21 @@
 package com.rawrysmode.entities.employee_transfer;
 
+import com.rawrysmode.entities.CustomTableModel;
+import com.rawrysmode.entities.TableEntity;
 import com.rawrysmode.entities.employee.Employee;
 import com.rawrysmode.entities.job.Job;
 
-import javax.swing.table.AbstractTableModel;
 import java.time.LocalDate;
 import java.util.List;
 
-public class EmployeeTransferTableModel extends AbstractTableModel {
+public class EmployeeTransferTableModel extends CustomTableModel<EmployeeTransfer> {
+
     private final EmployeeTransferService employeeTransferService;
-    private final List<EmployeeTransfer> employeeTransferList;
+    private List<TableEntity<EmployeeTransfer>> employeeTransferList;
 
     public EmployeeTransferTableModel() {
         employeeTransferService = new EmployeeTransferService();
-        employeeTransferList = employeeTransferService.findAll();
+        employeeTransferList = wrapList(employeeTransferService.findAll());
     }
 
     @Override
@@ -34,42 +36,24 @@ public class EmployeeTransferTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return switch (columnIndex) {
-            case 0 -> employeeTransferList.get(rowIndex).getEmployee();
-            case 1 -> employeeTransferList.get(rowIndex).getTransferReason();
-            case 2 -> employeeTransferList.get(rowIndex).getOldJob();
-            case 3 -> employeeTransferList.get(rowIndex).getNewJob();
-            case 4 -> employeeTransferList.get(rowIndex).getOrderNumber();
-            case 5 -> employeeTransferList.get(rowIndex).getOrderDate();
+            case 0 -> employeeTransferList.get(rowIndex).getEntity().getEmployee();
+            case 1 -> employeeTransferList.get(rowIndex).getEntity().getTransferReason();
+            case 2 -> employeeTransferList.get(rowIndex).getEntity().getOldJob();
+            case 3 -> employeeTransferList.get(rowIndex).getEntity().getNewJob();
+            case 4 -> employeeTransferList.get(rowIndex).getEntity().getOrderNumber();
+            case 5 -> employeeTransferList.get(rowIndex).getEntity().getOrderDate();
             default -> "Not found";
         };
     }
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         switch (columnIndex) {
-            case 0 -> {
-                employeeTransferList.get(rowIndex).setEmployee((Employee) aValue);
-                employeeTransferService.update(employeeTransferList.get(rowIndex));
-            }
-            case 1 -> {
-                employeeTransferList.get(rowIndex).setTransferReason((String) aValue);
-                employeeTransferService.update(employeeTransferList.get(rowIndex));
-            }
-            case 2 -> {
-                employeeTransferList.get(rowIndex).setOldJob((Job) aValue);
-                employeeTransferService.update(employeeTransferList.get(rowIndex));
-            }
-            case 3 -> {
-                employeeTransferList.get(rowIndex).setNewJob((Job) aValue);
-                employeeTransferService.update(employeeTransferList.get(rowIndex));
-            }
-            case 4 -> {
-                employeeTransferList.get(rowIndex).setOrderNumber((Integer) aValue);
-                employeeTransferService.update(employeeTransferList.get(rowIndex));
-            }
-            case 5 -> {
-                employeeTransferList.get(rowIndex).setOrderDate(LocalDate.parse((String) aValue));
-                employeeTransferService.update(employeeTransferList.get(rowIndex));
-            }
+            case 0 -> employeeTransferList.get(rowIndex).getEntity().setEmployee((Employee) aValue);
+            case 1 -> employeeTransferList.get(rowIndex).getEntity().setTransferReason((String) aValue);
+            case 2 -> employeeTransferList.get(rowIndex).getEntity().setOldJob((Job) aValue);
+            case 3 -> employeeTransferList.get(rowIndex).getEntity().setNewJob((Job) aValue);
+            case 4 -> employeeTransferList.get(rowIndex).getEntity().setOrderNumber((Integer) aValue);
+            case 5 -> employeeTransferList.get(rowIndex).getEntity().setOrderDate(LocalDate.parse((String) aValue));
         }
         fireTableDataChanged();
     }
@@ -91,4 +75,56 @@ public class EmployeeTransferTableModel extends AbstractTableModel {
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return true;
     }
+
+    @Override
+    public void findWhere(String request) {
+        employeeTransferList = wrapList(employeeTransferService.findWhere(request));
+        fireTableDataChanged();
+    }
+
+    @Override
+    public void createRow() {
+        employeeTransferList.add(new TableEntity<>(new EmployeeTransfer(), true));
+        fireTableDataChanged();
+    }
+
+    @Override
+    public void removeRow(int rowIndex) {
+        employeeTransferService.delete(employeeTransferList.remove(rowIndex).getEntity());
+        fireTableRowsDeleted(rowIndex, rowIndex);
+    }
+
+
+    @Override
+    public boolean hasChanged(int row) {
+        return employeeTransferList.get(row).hasChanged();
+    }
+
+    @Override
+    public void setHasChanged(int row) {
+        employeeTransferList.get(row).setHasChanged(true);
+    }
+
+    @Override
+    public boolean isCreated(int row) {
+        return employeeTransferList.get(row).isCreated();
+    }
+
+    @Override
+    public void setCreated(int row) {
+        employeeTransferList.get(row).setCreated(true);
+    }
+
+    @Override
+    public void save(int[] rows) {
+        for (int row : rows) {
+            TableEntity<EmployeeTransfer> tableEntity = employeeTransferList.get(row);
+            if (tableEntity.isCreated() || tableEntity.hasChanged()) {
+                employeeTransferService.update(tableEntity.getEntity());
+                tableEntity.setCreated(false);
+                tableEntity.setHasChanged(false);
+            }
+        }
+    }
+
 }

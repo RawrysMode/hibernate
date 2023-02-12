@@ -9,6 +9,7 @@ import java.util.List;
 import static com.rawrysmode.utils.HibernateUtils.getSessionFactory;
 
 public class EmployeeTransferDao implements Dao<EmployeeTransfer> {
+
     private Session currentSession;
     private Transaction currentTransaction;
 
@@ -22,18 +23,6 @@ public class EmployeeTransferDao implements Dao<EmployeeTransfer> {
 
     public Session getCurrentSession() {
         return currentSession;
-    }
-
-    public void setCurrentSession(Session currentSession) {
-        this.currentSession = currentSession;
-    }
-
-    public Transaction getCurrentTransaction() {
-        return currentTransaction;
-    }
-
-    public void setCurrentTransaction(Transaction currentTransaction) {
-        this.currentTransaction = currentTransaction;
     }
 
     public void openCurrentSessionWithTransaction() {
@@ -57,8 +46,8 @@ public class EmployeeTransferDao implements Dao<EmployeeTransfer> {
                         "upper(et.employee.firstname) like :param or " +
                         "upper(et.employee.lastname) like :param or " +
                         "upper(et.transferReason) like :param or " +
-                        "upper(et.oldJob) like :param or " +
-                        "upper(et.newJob) like :param or " +
+                        "upper(et.oldJob.jobTitle) like :param or " +
+                        "upper(et.newJob.jobTitle) like :param or " +
                         "cast(et.orderNumber as string) like :param or " +
                         "cast(et.orderDate as string) like :param", EmployeeTransfer.class)
                 .setParameter("param", "%" + s.toUpperCase() + "%")
@@ -87,4 +76,5 @@ public class EmployeeTransferDao implements Dao<EmployeeTransfer> {
         getCurrentSession().remove(entity);
         return true;
     }
+
 }

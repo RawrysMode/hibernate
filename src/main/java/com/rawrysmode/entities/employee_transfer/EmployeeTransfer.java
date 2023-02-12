@@ -12,6 +12,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "employee_transfers")
 public class EmployeeTransfer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -126,4 +127,5 @@ public class EmployeeTransfer {
                 " " + orderNumber +
                 " " + orderDate;
     }
+
 }

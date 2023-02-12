@@ -3,6 +3,7 @@ package com.rawrysmode.entities.employee_transfer;
 import java.util.List;
 
 public class EmployeeTransferService {
+
     private static EmployeeTransferDao employeeTransferDAO;
 
     public EmployeeTransferService() {
@@ -16,18 +17,16 @@ public class EmployeeTransferService {
         return true;
     }
 
-    public boolean update(EmployeeTransfer entity) {
+    public void update(EmployeeTransfer entity) {
         employeeTransferDAO.openCurrentSessionWithTransaction();
         employeeTransferDAO.update(entity);
         employeeTransferDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
-    public boolean delete(EmployeeTransfer entity) {
+    public void delete(EmployeeTransfer entity) {
         employeeTransferDAO.openCurrentSessionWithTransaction();
         employeeTransferDAO.delete(entity);
         employeeTransferDAO.closeCurrentSessionWithTransaction();
-        return true;
     }
 
     public List<EmployeeTransfer> findAll() {
@@ -50,4 +49,5 @@ public class EmployeeTransferService {
         employeeTransferDAO.closeCurrentSession();
         return result;
     }
+
 }
